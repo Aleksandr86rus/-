@@ -64,6 +64,10 @@
             background: linear-gradient(135deg, #5d4a7a, #4a3d6e);
         }
         
+        body.dark-theme .fixed-back-button {
+            background: linear-gradient(135deg, #4a5f7a, #34495e);
+        }
+        
         .animated-bg {
             position: fixed;
             top: 0;
@@ -416,6 +420,41 @@
             z-index: 1;
         }
         
+        /* Новая кнопка "Назад" внизу справа */
+        .fixed-back-button {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+        
+        .fixed-back-button.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        
+        .fixed-back-button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -459,6 +498,14 @@
                 height: 40px;
                 font-size: 16px;
             }
+            
+            .fixed-back-button {
+                bottom: 70px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -467,6 +514,11 @@
     
     <button class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-moon" id="theme-icon"></i>
+    </button>
+    
+    <!-- Новая кнопка "Назад" внизу справа -->
+    <button class="fixed-back-button" onclick="showSection('main')" title="На главную">
+        <i class="fas fa-arrow-left"></i>
     </button>
     
     <!-- Главный экран -->
@@ -492,6 +544,7 @@
             <p><i class="fas fa-copyright"></i> 2025 Система обучения по безопасности труда</p>
         </div>
     </div>
+    
     
     <!-- Раздел ПСКиПР -->
     <div id="pskiprSection" class="content-section container">
@@ -1539,6 +1592,7 @@
 
 
 
+
         </pre>
     </div>
     
@@ -2527,6 +2581,14 @@
  открыть соответствующие вентили и включить в работу агрегат путем нажатия соответствующей кнопки «пуск» на щите контроля и управления. 
  обогреватель должен быть выключен. 
  после запуска установки убедиться в ее исправности и допустимых параметрах работы. 
+
+
+
+
+
+
+
+
         </pre>
     </div>
     
@@ -3034,23 +3096,17 @@
 
 
 
+
+
+
+
+
         </pre>
     </div>
     
-    <!-- Панель управления размером шрифта -->
-    <div class="font-controls">
-        <button class="font-button" onclick="increaseFont()" title="Увеличить шрифт">
-            <i class="fas fa-plus"></i>
-        </button>
-        <button class="font-button" onclick="decreaseFont()" title="Уменьшить шрифт">
-            <i class="fas fa-minus"></i>
-        </button>
-        <button class="font-button reset" onclick="resetFont()" title="Сбросить размер шрифта">
-            <i class="fas fa-undo"></i>
-        </button>
-    </div>
+   
     
-    <script>
+ <script>
         let fontSize = 16;
         
         function showSection(section) {
@@ -3063,12 +3119,20 @@
             // Показываем выбранную секцию
             if (section === 'main') {
                 document.getElementById('mainScreen').style.display = 'block';
+                // Скрываем кнопку "Назад" на главной странице
+                document.querySelector('.fixed-back-button').classList.remove('visible');
             } else if (section === 'pskipr') {
                 document.getElementById('pskiprSection').style.display = 'block';
+                // Показываем кнопку "Назад" на страницах разделов
+                document.querySelector('.fixed-back-button').classList.add('visible');
             } else if (section === 'hos') {
                 document.getElementById('hosSection').style.display = 'block';
+                // Показываем кнопку "Назад" на страницах разделов
+                document.querySelector('.fixed-back-button').classList.add('visible');
             } else if (section === 'additional') {
                 document.getElementById('additionalSection').style.display = 'block';
+                // Показываем кнопку "Назад" на страницах разделов
+                document.querySelector('.fixed-back-button').classList.add('visible');
             }
         }
         
