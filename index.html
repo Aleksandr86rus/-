@@ -2,10 +2,21 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Обучающая система по безопасности</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Мета-теги для PWA -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Безопасность труда">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/your-icon.png">
+    
+    <!-- Манифест для Android -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCh0L7RgNC10L3QtdC90LjQtSDQutC+0LTQuNGA0L7QstCw0YLRjCIsCiAgInNob3J0X25hbWUiOiAi0JHQtdGA0L3QtdC90LjQtSDQutC+0LTQuNGA0L7QstCw0YLRjCIsCiAgImRlc2NyaXB0aW9uIjogItCQ0L/RgNC10LTQuNGC0Ywg0L3QsCDQvdCw0LvQuNGH0LjRgtC1INC80L7QttC10L3RgtCw0YLRjCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjVmN2ZhIiwKICAidGhlbWVfY29sb3IiOiAiIzM0OThkYiIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0LXByaW1hcnkiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2kuaW1ndXIuY29tL3lvdXItaWNvbi0xOTIucG5nIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9LAogICAgewogICAgICAic3JjIjogImh0dHBzOi8vaS5pbWd1ci5jb20veW91ci1pY29uLTUxMi5wbmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmltZ3VyLmNvbS95b3VyLWljb24tMTUzNi5wbmciLAogICAgICAic2l6ZXMiOiAiMTUzNngxNTM2IiwKICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    
     <style>
         :root {
             --primary-color: #3498db;
@@ -36,6 +47,10 @@
             flex-direction: column;
             min-height: 100vh;
             transition: all 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         
         body.dark-theme {
@@ -489,9 +504,57 @@
             transform: scale(1);
         }
         
-        .fixed-back-button:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #2c3e50, #1a252f);
+        .install-button {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .install-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+        
+        .install-instructions {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        
+        .install-instructions h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .install-instructions ol {
+            padding-left: 20px;
+        }
+        
+        .install-instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .install-instructions .highlight {
+            background: rgba(52, 152, 219, 0.2);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 600;
         }
         
         @keyframes fadeIn {
@@ -545,6 +608,11 @@
                 height: 45px;
                 font-size: 18px;
             }
+            
+            .install-button {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -560,11 +628,11 @@
     </button>
     
     <div id="mainScreen" class="main-screen container">
-        <h1><i class="fas fa-shield-alt"></i> Подготовка к ежегодным экзаменам Цех №4</h1>
+        <h1><i class="fas fa-shield-alt"></i> Подготовка к ежегодным экзаменам Цех №1 - №4</h1>
         <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 600px; margin: 0 auto;">
             Выберите раздел для изучения материалов по промышленной безопасности и охране труда
         </p>
-        
+        <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 600px; margin: 0 auto;"> Есть идеи пиши в WhatsApp  89129012584 </p>
         <div class="button-container">
             <button class="main-button" onclick="showSection('pskipr')">
                 <i class="fas fa-industry"></i> ПСКиПР
@@ -576,8 +644,21 @@
                 <i class="fas fa-question-circle"></i> Разные вопросы
             </button>
             <button class="main-button ttk" onclick="showSection('ttk')">
-                <i class="fas fa-cogs"></i> Вопросы ТТК
+                <i class="fas fa-cogs"></i> В разработке
             </button>
+        </div>
+        
+        <button id="installButton" class="install-button" onclick="installApp()" style="display: none;">
+            <i class="fas fa-download"></i> Установить приложение
+        </button>
+        
+        <div id="installInstructions" class="install-instructions" style="display: none;">
+            <h3>Как установить приложение на телефон:</h3>
+            <ol>
+                <li><strong>Для Android:</strong> Нажмите на кнопку "Установить приложение" выше и следуйте инструкциям браузера.</li>
+                <li><strong>Для iOS (Safari):</strong> Нажмите на иконку <span class="highlight"><i class="fas fa-share-square"></i></span> внизу экрана и выберите <span class="highlight">"На экран «Домой»"</span>.</li>
+                <li><strong>Для iOS (Chrome):</strong> Нажмите на иконку <span class="highlight"><i class="fas fa-ellipsis-v"></i></span> в правом верхнем углу и выберите <span class="highlight">"Добавить на главный экран"</span>.</li>
+            </ol>
         </div>
         
         <div style="margin-top: 60px; color: #95a5a6;">
@@ -593,9 +674,7 @@
             </button>
         </div>
         
-        
-        
-        <pre>
+            <pre>
 <span class="question">Вопрос № 1. В каких случаях манометры не допускаются к применению?</span><br>
 1. Отсутствует пломба или клеймо с отметкой о проведении поверки.
 2. Истек срок поверки манометра.
@@ -1632,10 +1711,7 @@
                 <i class="fas fa-arrow-left"></i> Назад
             </button>
         </div>
-        
-        
-        
-        <pre>
+       
 <span class="question">Вопрос № 1. Какие опасные и вредные производственные факторы воздействуют на оператора ХОС?</span><br>
 1. Химические	Агрессивные кислоты, метанол/гликоли, углеводороды и газы, сероводород, радиация
 2. Физические	Загазованность, шум, вибрация, запылённость, электронная и статическая опасность, условия микроклимата
@@ -2616,8 +2692,7 @@
             </button>
         </div>
         
-        <pre>
-<span class="question">1.	Укажите, какая периодичность проведения повторного инструктажа оператору ПСКПР?</span><br>
+      <span class="question">1.	Укажите, какая периодичность проведения повторного инструктажа оператору ПСКПР?</span><br>
  1.3. Оператор ПСКиПР должен проходить повторный инструктаж по программе первичного инструктажа на рабочем месте для оператора ПСКиПР на РУС не реже одного раза в 6 месяцев.
 
 
@@ -3106,255 +3181,20 @@
     
     <div id="ttkSection" class="content-section ttk-content container">
         <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-cogs"></i> Вопросы для операторов на ТТК</h2>
+            <h2 class="section-title"><i class="fas fa-cogs"></i> В разработке</h2>
             <button class="back-button" onclick="showSection('main')">
                 <i class="fas fa-arrow-left"></i> Назад
             </button>
         </div>
         
-       
-        
-        <pre>
-1.	<span class="question">Главные ориентиры и ценности компании </span><br>
-
-2.	<span class="question">СИЗ (что такое, норма выдачи, где узнать нормы) </span><br>
-3.	<span class="question">Определение НКПР, ВКПР </span><br>
-
-4.	<span class="question"> Мультигазсенс. Описание прибора, принцип действия, ед.измерения, среда измерения, период поверки. </span><br>
-
-
-
-5.	<span class="question">Виды инструктажей (сроки проведения повторного инструктажа, причины проведения внепланового инструктажа и т.д.) </span><br>
-
-
-6 <span class="question">Требования к маршевым лестницам, лестницам туннельного типа
-Требования к маршевым лестницам </span><br>
-
-
-7	<span class="question">ПДК, ПДВК определение, значения </span><br>
-
-8	<span class="question">Требования к манометрам (подбор, установка, отбраковка, поверка, проверка) </span><br>
-
-
-
-9	<span class="question">Как определяется класс точности манометра </span><br>
-
-10	<span class="question">Кем утверждается график проверки исправности манометров </span><br>
-
-11	<span class="question">Требования безопасности при работе с ППУА-1600/100 (ИНСТРУКЦИЯ № 2.1.4.) </span><br>
-
-
-12	<span class="question">Золотые правила безопасности труда </span><br>
-
-
-13	<span class="question">ПШ (ПШ-1,ПШ-2 комплектность, отличия) </span><br>
-
-14	<span class="question">Веревки, пояса (периодичность испытаний (вес, время) </span><br>
-
-
-15	<span class="question">СРД (определение, чем оборудован, что указывается на табличке, пуск и остановка сосуда) </span><br>
-
-16	<span class="question">Перечень газоопасных мест и работ кто утверждает, на какой срок </span><br>
-
-
-17	<span class="question">Перечень работ повышенной опасности кто утверждает, на какой срок </span><br>
-
-18	<span class="question">Газоопасные работы (определение, виды, из каких этапов состоит, какие меры безопасности следует обеспечить для безопасного проведения, кем утв. Н/Д на газоопасные работы, где указаны работы проводимые без НД) </span><br>
-
-
-19	<span class="question">АБВР определение, виды </span><br>
-
-20	<span class="question">Требования к заглушкам </span><br>
-
-
-21	<span class="question">Запорная и запорно-регулирующая арматура (маркировка) </span><br>
-
-22	<span class="question">Работы на высоте </span><br>
-
-
-23	<span class="question">Оказание первой доврачебной помощи (все случаи) </span><br>
-
-24	<span class="question">Огневые работы (определение) </span><br>
-
-25	<span class="question">Порядок согласования Н/Д на огневые работы в период выходных и праздничных дней </span><br>
-
-
-26	<span class="question">Первичные средства пожаротушения </span><br>
-
-27	<span class="question">Огнетушители ОУ, ОП (Огнетушащее в-во, назначение, классы пожаров) </span><br><span class="question">Чем опасен электрический ток </span><br>
-
-
-28	<span class="question">Средства коллективной защиты </span><br>
-
-29	<span class="question">Определение авария, инцидент </span><br>
-
-
-30	<span class="question">При какой температуре не допускается работа внутри ёмкостей (аппаратов) </span><br>
-
-31	<span class="question">Каким образом оформляются работы по установке-снятию заглушек на запорных элементах трубопроводной системы аппаратов, сосудов) </span><br>
-
-
-32	<span class="question">Колодцы (к какому виду работ  относятся работы по визуальному осмотру (без нахождения персонала внутри) оборудования канализационных колодцев, дождеприёмников, гидрозатворов. </span><br>
-
-33	<span class="question">Что такое «Кодекс деловой и корпоративной этики», кто в ЮНГ является «Экспертом» </span><br>
-
-
-34	<span class="question">Сальники какие используются, подготовка к замене и замена сальников; </span><br>
-
-35	<span class="question">Схема работы объекта (какое основное оборудование установлено, включая счетчики, технологические параметры) </span><br>
-
-
-36	<span class="question">Порядок действий  в аварийной ситуации </span><br>
-
-37	<span class="question">Тех. Инструкция на объект </span><br>
-
-38	<span class="question">Тех. карта (знать все параметры работы оборудования) </span><br>
-
-
-39	<span class="question">Класс опасности объекта и помещений на объекте </span><br>
-
-40	<span class="question"> Должности и имена руководителей процессного управления  и общества </span><br>
-
-
-41	<span class="question">Актуальные молнии (за последний календарный месяц) </span><br>
-
-42	<span class="question">Какие последние изменения были внесены в коллективный договор. Сроки действия коллективного договора. Какие есть приложения к коллективному договору? </span><br>
-
-
-43	<span class="question">Ключевые риски в области ПБОТОС ООО «РН-Юганскнефтегаз» и УХПП</span><br>
-
-44	<span class="question">Политика компании в области ОТ и ПБ</span><br>
-
-
-45	<span class="question">Политика компании в области охраны окружающей среды </span><br>
-
-46	<span class="question">Опасные и вредные производственные факторы - в чем различие, примеры, способы снижения их воздействия на работника, доплаты за вредность (есть ли у вас такая доплата? В каком размере?) </span><br>
-
-
-47	<span class="question">Заземление – определение, назначение</span><br>
-
-48	<span class="question">Система оповещения при обнаружении опасности или аварийной ситуации или несчастного случая</span><br>
-
-
-49	<span class="question">Фотография рабочего дня. Что это? Для чего проводится? </span><br>
-
-50	<span class="question">ПВТР: О чем этот документ? Где можно найти актуальную его версию? Где находится распечатанная версия документа у вас на объекте/в бригаде? </span><br>
-
-
-51	<span class="question">Сроки ознакомления с графиками выхода на работу/ графиком отпусков. (ПВТР) </span><br>
-
-52	<span class="question">Права, обязанности работников, требования к соблюдению дисциплины. (ПВТР) </span><br>
-
-
-53	<span class="question">Виды дисциплинарных проступков. (ПВТР) </span><br>
-
-54	<span class="question">Режим пятидневной рабочей недели (вопрос для работников работающих по 5дн.раб.неделе См. п.6.2.2 ПВТР,) </span><br>
-
-
-55	<span class="question">Сменная работа (вопрос для работников работающих по сменному графику. См. п. 6.3 ПВТР, приложение 5 ПВТР) </span><br>
-56	<span class="question">ЛВЖ, ГЖ что используется в цеху, названия, меры предосторожности при использовании и хранении, перевозки</span><br>
-
-57	<span class="question">Группа электробезопасности, какая группа у вас, периодичность присвоения групп. </span><br>
-
-
-58	<span class="question">В каком документе можно посмотреть номера тел. Скорой помощи, пожарной части, полиции, ЕДДС и тд. Знание номеров служб. </span><br>
-
-59	<span class="question">Кто допускается к работе в качестве оператора ХОС/ПСКиПР</span><br>
-
-
-60	<span class="question">Обязанности оператора ХОС/ПСКиПР (расскажите обязанности по своей профессии) </span><br>
-
-61	<span class="question">В каком документе прописан режим работы сотрудников. </span><br>
-
-
-62	<span class="question">Каким образом контролируется утечка через сальники. (ПСКиПР) </span><br>
-
-63	<span class="question">Допускаемая утечка через сальники. (ПСКиПР) </span><br>
-
-
-64	<span class="question">Каким образом подбираются сальники (формула Д=Д (сальниковой камеры)-Д(вала). (ПСКиПР) </span><br>
-
-65	<span class="question">В каких случаях запрещен запуск насосного агрегата. (ПСКиПР) </span><br>
-
-
-66	<span class="question">Порядок запуска насосного агрегата в работу/остановки для проведения работ по подтяжке и замене сальниковых уплотнений</span><br>
-
-67	<span class="question">Какая рабочая температура ЭД, какая предельная температура. (ПСКиПР) </span><br>
-
-
-68	<span class="question">В каких случаях запрещен запуск насосного агрегата. (ПСКиПР) </span><br>
-
-69	<span class="question">Что такое явление кавитация, чем она опасна. </span><br>
-
-
-70	<span class="question">КВЧ, нормы, правила отбора, график отбора на КВЧ. Что делать при превышении. </span><br>
-
-71	<span class="question">Как контролируется осевое смещение ротора — зазоры на полумуфтах (допустимое смещение ротора 3мм). (ПСКиПР) </span><br>
-
-
-72	<span class="question">Действия при обнаружении опасных факторов которые могут повлечь возникновения несчастного случая, либо аварии. </span><br>
-
-73	<span class="question">Какие данные указывается на табличке сосуда (емкости). </span><br>
-
-
-74	<span class="question">Какими инструментами необходимо пользоваться при выполнении газоопасных работ. </span><br>
-
-75	<span class="question">Какими осветительными приборами необходимо пользоваться</span><br>
-
-
-76	<span class="question">Меры предосторожности при выполнении работ в замкнутом пространстве</span><br>
-
-77	<span class="question">Проверка знаний требований безопасности труда у рабочих. Периодичность проверки знаний, в зависимости от стажа работы. Срок ознакомления с графиками по Проверке знаний. Консультация, что это и когда проводится. </span><br>
-
-
-78	<span class="question">Время и периодичность обхода, осмотра объекта. Ведение вахтового журнала. Порядок передачи смены (реагенты, оборудование, территория, СИЗОД. и тд.) </span><br>
-
-79	<span class="question">Периодичность проведения занятий использования СИЗ и СИЗОД. </span><br>
-
-
-80	<span class="question">Где взять актуальные инструкции по ПБ и ОТ, а так же всю необходимую информацию на рабочем месте. </span><br>
-
-81	<span class="question">Чек-листы по химии на ХОС </span><br>
-
-
-82	<span class="question">ХОС. Порядок проведения работ на кустовых площадках. Расстановка оборудования и техники. Перечень документов. СИЗ, СИЗОД. </span><br>
-
-83	<span class="question">ПСКиПР перечень документов порядок действий при выдачи ЖГС. </span><br>
-
-
-84	<span class="question">ПНП. Обвязка устья скважины при проведении ОПЗ. Рассказать поэтапно работу</span><br>
-
-85	<span class="question">Порядок проведения ОПЗ, КОПЗП, СКВ. Рассказать поэтапно работу</span><br>
-
-
-86	<span class="question">ИНЭР. Определение, состав, порядок приготовления. Рассказать поэтапно работу</span><br>
-
-87	<span class="question">Обслуживание УДЭ, БРХ. Рассказать поэтапно работу</span><br>
-
-
-88	<span class="question">Порядок проведения гидроиспытаний сосудов, периодичность</span><br>
-
-89	<span class="question">Порядок проведения наружнего и внутреннего осмотра, периодичность</span><br>
-
-
-90	<span class="question">Текущее обслуживание насосов 6Ш8-2, НМШ, НД</span><br>
-
-91	<span class="question">Порядок отпуска ЖГС – ПСКиПР</span><br>
-
-92	<span class="question">Чек-лист осмотра спецтехники – ПНП</span><br>
-
-
-93	<span class="question">Перечень необходимых документов для вовлечения хим.реагента в производство</span><br>
-
-94	<span class="question">Виды смазочных материалов, их отличия. </span><br>
-
-        </pre>
+        <!-- Содержимое раздела ТТК -->
     </div>
     
     
     
     <script>
         let fontSize = 16;
+        let deferredPrompt;
         
         function showSection(section) {
             document.getElementById('mainScreen').style.display = 'none';
@@ -3401,6 +3241,54 @@
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
             }
+        }
+        
+        // Функция установки приложения
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Пользователь принял установку');
+                    } else {
+                        console.log('Пользователь отклонил установку');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Показываем инструкции для ручной установки
+                document.getElementById('installInstructions').style.display = 'block';
+            }
+        }
+        
+        // Обработка события beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Показываем кнопку установки
+            const installButton = document.getElementById('installButton');
+            installButton.style.display = 'flex';
+            
+            // Скрываем инструкции, если они были показаны
+            document.getElementById('installInstructions').style.display = 'none';
+        });
+        
+        // Обработка события appinstalled
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+            document.getElementById('installButton').style.display = 'none';
+            console.log('Приложение успешно установлено');
+        });
+        
+        // Проверяем, поддерживает ли браузер установку PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Для iOS всегда показываем инструкции
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    document.getElementById('installInstructions').style.display = 'block';
+                }
+            });
         }
         
         setTimeout(() => {
